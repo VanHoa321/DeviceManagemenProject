@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DeviceTypeController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\DeviceController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/',[AccountController::class, "login"])->name("index");
 
@@ -21,9 +22,13 @@ Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
 //Admin
 Route::prefix('admin')->middleware("admin")->group(function () {
     Route::get('/trang-chu', [HomeController::class, 'index']) ->name('home.index');
+
+    //Profile
     Route::get('/thong-tin-tai-khoan', [AccountController::class, 'profile']) ->name('profile');
     Route::get('/cap-nhat-thong-tin', [AccountController::class, 'editProfile']) ->name('edit.profile');
     Route::post('/profile/update', [AccountController::class, 'updateProfile']) -> name('updateProfile');
+    Route::get('/doi-mat-khau', [AccountController::class, 'editPassword']) ->name('editPassword');
+    Route::post('/update-password', [AccountController::class, 'updatePassword']) -> name('updatePassword');
     //CRUD Menu
     Route::get('/menu/index', [AdminMenuController::class, 'index']) ->name('menu.index');
     Route::get('/menu/create', [AdminMenuController::class, 'create']) -> name('menu.create');
@@ -64,6 +69,12 @@ Route::prefix('admin')->middleware("admin")->group(function () {
     Route::get('/chinh-sua-thiet-bi/{id}', [DeviceController::class, 'edit']) -> name('device.edit');
     Route::post('/device/update/{id}', [DeviceController::class, 'update']) -> name('device.update');
     Route::delete('/device/destroy/{id}', [DeviceController::class, 'destroy']);
+
+    //User
+    Route::get('/danh-sach-nguoi-dung', [UserController::class, 'index']) ->name('user.index');
+    Route::get('/them-moi-nguoi-dung', [UserController::class, 'create']) -> name('user.create');
+    Route::post('/user/store', [UserController::class, 'store']) -> name('user.store');
+    Route::post('/user/change-status', [UserController::class, 'changeStatus']) -> name('user.store');
 });
 
 

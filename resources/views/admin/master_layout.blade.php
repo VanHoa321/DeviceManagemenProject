@@ -198,7 +198,7 @@
             $('#lfm').filemanager('image');
             $('#lfm').on('click', function() {
                 var route_prefix = '/files-manager';
-                window.open(route_prefix + '?type=image', 'FileManager', 'width=900,height=600');
+                window.open(route_prefix + '?type=image', 'FileManager', 'width=700,height=400');
                 window.SetUrl = function (items) {
                     var url = items[0].url;
                     $('#holder').attr('src', url);

@@ -53,4 +53,19 @@ class User extends Authenticatable
     protected $primaryKey = 'user_id';
     protected $table = 'users';
     public  $timestamps = false;
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(WorkUnit::class, 'unit_id');
+    }
 }

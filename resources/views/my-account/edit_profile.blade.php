@@ -140,10 +140,10 @@
 @endsection
 
 @section('scripts')
-    <script src="{{asset("assets/plugins/jquery-validation/jquery.validate.min.js")}}"></script>
-    <script src="{{asset("assets/plugins/jquery-validation/additional-methods.min.js")}}"></script>
-    <script src="{{asset("assets/plugins/select2/js/select2.full.min.js")}}"></script>
-    <script src="{{asset("assets/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js")}}"></script>
+<script src="{{asset("assets/plugins/jquery-validation/jquery.validate.min.js")}}"></script>
+<script src="{{asset("assets/plugins/jquery-validation/additional-methods.min.js")}}"></script>
+<script src="{{asset("assets/plugins/select2/js/select2.full.min.js")}}"></script>
+<script src="{{asset("assets/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js")}}"></script>
 <script>
     $(function() {
         $('#quickForm').validate({
@@ -172,11 +172,17 @@
                     minlength: "Tên người dùng phải có ít nhất {0} ký tự!"
                 },
                 email: {
-                    required: "Số hiệu thiết bị không được để trống",
-                    minlength: "Số hiệu thiết bị phải có ít nhất {0} ký tự!"
+                    required: "Email không được để trống",
+                    minlength: "Email phải có ít nhất {0} ký tự!"
                 },
-                years: {
-                    required: "Năm sử dụng không được để trống"
+                phone: {
+                    required: "Số điện thoại không được để trống"
+                },
+                address: {
+                    required: "Địa chỉ không được để trống"
+                },
+                dob: {
+                    required: "Ngày sinh không được để trống"
                 }
             },
             errorElement: 'span',
@@ -191,11 +197,6 @@
                 $(element).removeClass('is-invalid');
             }
         });
-
-        $('.select2').select2()
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
     });
 
     $(document).ready(function() {

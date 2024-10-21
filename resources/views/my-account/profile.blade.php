@@ -18,6 +18,19 @@
                 </div>
             </div>
         </div>
+        @if(Session::has('messenge') && is_array(Session::get('messenge')))
+            @php
+                $messenge = Session::get('messenge');
+            @endphp
+            @if(isset($messenge['style']) && isset($messenge['msg']))
+                <div class="alert alert-{{ $messenge['style'] }}" role="alert" style="position: fixed; top: 70px; right: 16px; width: auto; z-index: 999" id="myAlert">
+                    <i class="bi bi-check2 text-{{ $messenge['style'] }}"></i>{{ $messenge['msg'] }}
+                </div>
+                @php
+                    Session::forget('messenge');
+                @endphp
+            @endif
+        @endif
     </section>
 
     <section class="content">
@@ -86,7 +99,7 @@
                                    title="Cập nhật tài khoản">
                                     <i class="bi bi-pencil"> Cập nhật tài khoản</i>
                                 </a>                                
-                                <a asp-area="Admin" asp-controller="Profile" asp-action="EditPassWord"
+                                <a href="{{route("editPassword")}}"
                                    class="btn btn-info btn-sm"
                                    title="Đổi mật khẩu">
                                     <i class="bi bi-pencil"> Đổi mật khẩu</i>
@@ -101,4 +114,9 @@
 </div>
 @endsection
 
+<script>
+    setTimeout(function() {
+        $("#myAlert").fadeOut(500);
+    },3500);
+</script>
 

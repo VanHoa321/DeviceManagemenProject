@@ -57,4 +57,23 @@ class AccountController extends Controller
         $request->session()->put("messenge", ["style" => "success", "msg" => "Cập nhật hồ sơ thành công"]);
         return redirect()->route('profile');
     }
+
+    public function editPassword(){
+        $user = Auth::user();
+        return view('my-account.edit_password', compact('user'));
+    }
+
+    public function updatePassword(Request $request){
+        $user = Auth::user();
+        if (!Hash::check($request->old_password, $user->password)) {
+            $request->session()->put("messenge", ["style" => "danger", "msg" => "Mật khẩu cũ không đúng"]);
+            return redirect()->back();
+        }
+        $id = $user->user_id;
+        $update = User::find($id);
+        $update->password = Hash::make($request->new_password);
+        $update->save();
+        $request->session()->put("messenge", ["style" => "success", "msg" => "Cập nhật mật khẩu thành công"]);
+        return redirect()->route('profile');
+    }
 }
