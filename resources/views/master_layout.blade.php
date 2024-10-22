@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield(section: 'title')</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -80,8 +81,8 @@
         </nav>
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="/Admin/Home/Index" class="brand-link text-center">
-                <span class="brand-text font-weight-light text-info font-weight-bold">QUẢN TRỊ VIÊN</span>
+            <a href="#" class="brand-link text-center">
+                <span class="brand-text font-weight-light text-info font-weight-bold text-uppercase">{{Auth::user()->role->role_name}}</span>
             </a>
 
             <div class="sidebar">

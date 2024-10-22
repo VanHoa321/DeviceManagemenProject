@@ -16,6 +16,7 @@ class Menu extends Model
         "item_order",
         "icon",
         "route",
+        "role_id",
         "is_active"
     ];
     protected $primaryKey = 'menu_id';

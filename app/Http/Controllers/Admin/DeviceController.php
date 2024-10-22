@@ -11,7 +11,7 @@ class DeviceController extends Controller
 {
     public function index()
     {
-        $devices = Device::with('type', 'room', 'unit')->get();
+        $devices = Device::with('type', 'room', 'unit')->orderBy('device_id', 'desc')->get();
         return view("admin.pages.device.list_devices", compact("devices"));
     }
 

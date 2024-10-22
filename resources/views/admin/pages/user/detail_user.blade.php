@@ -1,5 +1,5 @@
 @extends('master_layout')
-@section('title', 'Thông tin tài khoản')
+@section('title', 'Thông tin người dùng')
 @section('content')
 
 <div class="content-wrapper">
@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h4>Thông tin cá nhân</h4>
+                    <h4>Thông tin người dùng</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">Quản lý thông tin cá nhân</li>
-                        <li class="breadcrumb-item active">Giao diện</li>
+                        <li class="breadcrumb-item">Quản lý người dùng</li>
+                        <li class="breadcrumb-item active">Thông tin tài khoản</li>
                     </ol>
                 </div>
             </div>
@@ -75,12 +75,12 @@
                             <hr>
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 label"><strong>Địa chỉ</strong></div>
-                                <div class="col-lg-9 col-md-8">{{$user->address ? "$user->address" : "Chưa cập nhật"}}</div>
+                                <div class="col-lg-9 col-md-8">{{$user->address? "$user->address":"Chưa cập nhật"}}</div>
                             </div>
                             <hr>
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 label"><strong>Khoa/ Viện</strong></div>
-                                <div class="col-lg-9 col-md-8">{{$unit->name}}</div>
+                                <div class="col-lg-9 col-md-8">{{$unit->name? "$unit->name":"Chưa cập nhật"}}</div>
                             </div>
                             <hr>
                             <div class="row">
@@ -93,17 +93,8 @@
                                 <div class="col-lg-9 col-md-8">{{$role->role_name}}</div>
                             </div>
                             <hr>
-                            <div class="text-center p-1">
-                                <a href="{{route("edit.profile")}}"
-                                   class="btn btn-info btn-sm"
-                                   title="Cập nhật tài khoản">
-                                    <i class="bi bi-pencil"> Cập nhật tài khoản</i>
-                                </a>                                
-                                <a href="{{route("editPassword")}}"
-                                   class="btn btn-info btn-sm"
-                                   title="Đổi mật khẩu">
-                                    <i class="bi bi-pencil"> Đổi mật khẩu</i>
-                                </a>
+                            <div class="text-left p-1">
+                                <a href="{{route('user.index')}}" class="btn btn-warning"><i class="fa-solid fa-rotate-left" style="color:white" title="Quay lại"></i></a>                                
                             </div>
                         </div>
                     </div>

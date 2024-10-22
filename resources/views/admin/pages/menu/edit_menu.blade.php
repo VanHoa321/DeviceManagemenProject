@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Chỉnh sửa Menu')
 @section('content')
 
@@ -67,9 +67,24 @@
                                         </div>
                                     </div>
                                 </div>                               
-                                <div class="form-group">
-                                    <label>Route</label>
-                                    <input type="text" name="route" value="{{ $edit->route }}" class="form-control" placeholder="Nhập Route menu">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Route</label>
+                                            <input type="text" name="route" value="{{$edit->route}}" class="form-control" placeholder="Nhập Route menu">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Phân quyền</label>
+                                            <select name="role_id" class="form-control select2bs4">
+                                                <option value="0">--Tất cả--</option>
+                                                @foreach($roles as $item);
+                                                <option value="{{$item->role_id}}" {{ $item->role_id == $edit->role_id ? 'selected' : '' }}>{{$item->role_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group pt-2">
                                     <label for="is_active">Trạng thái</label>

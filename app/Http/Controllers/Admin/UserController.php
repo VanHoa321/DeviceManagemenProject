@@ -62,12 +62,13 @@ class UserController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        $position = Position::where("position_id", $user->position_id)->first();
+        $unit = WorkUnit::where("unit_id", $user->unit_id)->first();
+        $role = Role::where("role_id", $user->role_id)->first();
+        return view("admin.pages.user.detail_user", compact('user', 'position','unit','role'));
     }
 
     public function changeStatus($id)
@@ -76,7 +77,8 @@ class UserController extends Controller
         if($user){
             $user->status = !$user->status;
             $user->save();
-            return response()->json(['success' => true, 'status' => $user->status]);
+            $message = $user->status ? 'Tài khoản đã được kích hoạt' : 'Tài khoản đã bị khóa';
+            return response()->json(['success' => true, 'message'=> $message, 'status' => $user->status]);
         }
         else{
             return response()->json(['success'=> false, 'message'=> 'Không tìm thấy người dùng']);

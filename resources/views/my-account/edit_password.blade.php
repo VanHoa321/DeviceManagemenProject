@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Đổi mật khẩu')
 @section('content')
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Role;
 
 class AdminMenuController extends Controller
 {
@@ -19,7 +20,8 @@ class AdminMenuController extends Controller
         $listMenu = Menu::where('is_active', true)
                     ->where('parent_level', 0)
                     ->orderBy('menu_id', 'desc')->get();
-        return view("admin.pages.menu.create_menu", compact("listMenu"));
+        $roles = Role::all();
+        return view("admin.pages.menu.create_menu", compact("listMenu","roles"));
     }
 
     public function store(Request $request)
@@ -31,6 +33,7 @@ class AdminMenuController extends Controller
         $create->item_order = $request->item_order;
         $create->icon = $request->icon;
         $create->route = $request->route;
+        $create->role_id = $request->role_id;
         $create->is_active = $request->has('is_active') ? true : false;
         $create->save();
         $request->session()->put("messenge", ["style"=>"success","msg"=>"Thêm mới Menu thành công"]);
@@ -43,7 +46,8 @@ class AdminMenuController extends Controller
                     ->where('parent_level', 0)
                     ->orderBy('menu_id', 'desc')->get();
         $edit = Menu::where("menu_id", $id)->first();
-        return view("admin.pages.menu.edit_menu", compact("edit", "listMenu"));
+        $roles = Role::all();
+        return view("admin.pages.menu.edit_menu", compact("edit", "listMenu", "roles"));
     }
 
     public function update(Request $request, $id)
@@ -55,6 +59,7 @@ class AdminMenuController extends Controller
         $update->item_order = $request->item_order;
         $update->icon = $request->icon;
         $update->route = $request->route;
+        $update->role_id = $request->role_id;
         $update->is_active = $request->has('is_active') ? true : false;
         $update->save();
         $request->session()->put("messenge", ["style"=>"success","msg"=>"Cập nhật Menu thành công"]);

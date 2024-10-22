@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Chỉnh sửa thiết bị')
 @section('content')
 
@@ -90,10 +90,11 @@
                                                 <div class="form-group">
                                                     <label>Trạng thái</label>
                                                     <select name="status" class="form-control select2bs4">
-                                                        <option value="0">---Chọn trạng thái---</option>
-                                                        <option value="1" {{ $device->status == 1 ? 'selected' : '' }}>Đang hoạt động</option>
-                                                        <option value="2" {{ $device->status == 2 ? 'selected' : '' }}>Đang bảo trì</option>
-                                                        <option value="3" {{ $device->status == 3 ? 'selected' : '' }}>Đang bị hỏng</option>
+                                                        @if ($device->status == 1)
+                                                            <option value="1" selected>Đang hoạt động</option>
+                                                        @else
+                                                            <option value="0" selected>Đã bị hỏng</option>
+                                                        @endif                                                                                                             
                                                     </select>
                                                 </div>
                                             </div>

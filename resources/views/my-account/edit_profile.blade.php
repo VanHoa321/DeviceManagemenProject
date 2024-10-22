@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Cập nhật thông tin')
 @section('content')
 

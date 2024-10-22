@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\WorkUnit;
 use App\Models\Position;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,10 @@ class AccountController extends Controller
             $request->session()->put("messenge", ["style"=>"success","msg"=>"Đăng nhập quyền quản trị thành công"]);
             return redirect()->route("home.index");
         }
+        elseif (Auth::attempt(["user_name"=>$request->user_name,"password"=>$request->password, "role_id"=> 4])){
+            $request->session()->put("messenge", ["style"=>"success","msg"=>"Đăng nhập quyền đơn vị sử dụng thành công"]);
+            return redirect()->route("homeU.index");
+        }
         $request->session()->put("messenge", ["style"=>"danger","msg"=>"Thông tin tài khoản không đúng"]);
         return redirect()->route("login");
     }
@@ -32,8 +37,10 @@ class AccountController extends Controller
 
     public function profile(){
         $user = Auth::user();
+        $position = Position::where("position_id",$user->position_id)->first();
         $unit = WorkUnit::where("unit_id",$user->unit_id)->first();
-        return view('my-account.profile', compact('user','unit'));
+        $role = Role::where("role_id",$user->role_id)->first();
+        return view('my-account.profile', compact('user','unit', 'role', 'position'));
     }
     
     public function editProfile(){

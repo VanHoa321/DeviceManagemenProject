@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Chỉnh sửa loại thiết bị')
 @section('content')
 

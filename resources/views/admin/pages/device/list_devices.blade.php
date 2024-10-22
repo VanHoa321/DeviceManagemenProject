@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Danh sách thiết bị')
 @section('content')
 
@@ -74,10 +74,7 @@
                                                 @case(1)
                                                     <span class="btn btn-sm btn-success">Đang hoạt động</span>
                                                     @break
-                                                @case(2)
-                                                    <span class="btn btn-sm btn-warning">Đang bảo trì</span>
-                                                    @break
-                                                @case(3)
+                                                @case(0)
                                                     <span class="btn btn-sm btn-danger">Đang bị hỏng</span>
                                                     @break
                                                 @default

@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Thêm mới thiết bị')
 @section('content')
 
@@ -90,10 +90,7 @@
                                                 <div class="form-group">
                                                     <label>Trạng thái</label>
                                                     <select name="status" class="form-control select2bs4">
-                                                        <option value="0">---Chọn trạng thái---</option>
                                                         <option value="1">Đang hoạt động</option>
-                                                        <option value="2">Đang bảo trì</option>
-                                                        <option value="3">Đang bị hỏng</option>
                                                     </select>
                                                 </div>
                                             </div>

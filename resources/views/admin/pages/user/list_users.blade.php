@@ -1,4 +1,4 @@
-@extends('admin.master_layout')
+@extends('master_layout')
 @section('title', 'Danh sách người dùng')
 @section('content')
 
@@ -71,20 +71,20 @@
                                         <td>{{ $items->unit ? $items->unit->name : 'N/A' }}</td>
                                         <td>{{ $items->position ? $items->position->name : 'N/A' }}</td> 
                                         <td>{{ $items->role ? $items->role->role_name : 'N/A' }}</td>
-                                        <td>
+                                        <td class="status-column">
                                             @switch($items->status)
                                                 @case(1)
-                                                    <span class="btn btn-sm btn-success">Đang hoạt động</span>
+                                                    <span class="btn btn-sm btn-success" style="width:120px">Đang hoạt động</span>
                                                     @break
-                                                @case(2)
-                                                    <span class="btn btn-sm btn-warning">Đã bị khóa</span>
+                                                @case(0)
+                                                    <span class="btn btn-sm btn-warning" style="width:120px">Đã bị khóa</span>
                                                     @break
                                                 @default
                                                     Không xác định
                                             @endswitch
                                         </td>                                                                                                                    
                                         <td>
-                                            <a href="{{route('device.edit', $items->user_id)}}" class="btn btn-info btn-sm" title="Xem thông tin người dùng">
+                                            <a href="{{route('user.show', $items->user_id)}}" class="btn btn-info btn-sm" title="Xem thông tin người dùng">
                                                 <i class="fa-solid fa-eye"></i>
                                             </a>
                                             @if($items->role_id != 1)
@@ -114,36 +114,59 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-
-        $('body').on('click', '.btn-lock-acc', function (e) {
+        $('body').on('click', '.btn-lock-acc, .btn-unlock-acc', function (e) {
             e.preventDefault();
-            const id = $(this).data('id');
+            var button = $(this);
+            const id = button.data('id');
+            var statusColumn = button.closest('tr').find('.status-column');
+            var actionTitle = button.hasClass('btn-lock-acc') ? "Xác nhận khóa tài khoản?" : "Xác nhận mở khóa tài khoản?";
+            var actionConfirmText = button.hasClass('btn-lock-acc') ? "Khóa" : "Mở khóa";
+            
             Swal.fire({
-                title: "Xác nhận xóa thiết bị?",
+                title: actionTitle,
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Xóa",
+                confirmButtonText: actionConfirmText,
                 cancelButtonText: "Hủy"
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "/admin/device/destroy/" + id,
-                        type: "DELETE",
+                        url: "/admin/user/change-status/" + id,
+                        type: "POST",
                         data: {
-                            _token: '{{ csrf_token() }}'
+                            _token: $('meta[name="csrf-token"]').attr('content'),
                         },
                         success: function (response) {
-                            toastr.success(response.message);
-                            $('#device-'+id).remove();                           
+                            if (response.success) {
+                                toastr.success(response.message);
+                                if (response.status) {
+                                    button
+                                        .removeClass('btn-success btn-unlock-acc')
+                                        .addClass('btn-danger btn-lock-acc')
+                                        .attr('title', 'Khóa tài khoản')
+                                        .html('<i class="fa-solid fa-lock"></i>');
+                                    statusColumn.html('<span class="btn btn-sm btn-success" style="width:120px">Đang hoạt động</span>');
+                                } else {
+                                    button
+                                        .removeClass('btn-danger btn-lock-acc')
+                                        .addClass('btn-success btn-unlock-acc')
+                                        .attr('title', 'Mở khóa tài khoản')
+                                        .html('<i class="fa-solid fa-lock-open"></i>');
+                                    statusColumn.html('<span class="btn btn-sm btn-warning" style="width:120px">Đã bị khóa</span>');
+                                }
+                            } else {
+                                toastr.error('Có lỗi khi thay đổi trạng thái tài khoản');
+                            }
                         },
-                        error: function(xhr) {
-                            toastr.error('Có lỗi khi xóa thiết bị');
+                        error: function (xhr, status, error) {
+                            console.error(xhr); // Ghi lại chi tiết lỗi vào console
+                            toastr.error('Có lỗi khi thực hiện yêu cầu: ' + xhr.responseText);
                         }
                     });
                 }
             });
-        })
+        });
 
         setTimeout(function() {
             $("#myAlert").fadeOut(500);

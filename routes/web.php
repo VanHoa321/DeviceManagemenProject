@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\DeviceController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\UseUnit\HomeUserUnitController;
+use App\Http\Controllers\UseUnit\ErrorReportController;
 
 Route::get('/',[AccountController::class, "login"])->name("index");
 
@@ -16,19 +18,21 @@ Route::group(['prefix' => 'files-manager', 'middleware' => ['web']], function ()
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
+//Account
 Route::get('/dang-nhap', [AccountController::class, 'login'])->name('login');
 Route::post('/login', [AccountController::class, 'postLogin'])->name('postLogin');
 Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
+
+//Profile
+Route::get('/thong-tin-tai-khoan', [AccountController::class, 'profile']) ->name('profile');
+Route::get('/cap-nhat-thong-tin', [AccountController::class, 'editProfile']) ->name('edit.profile');
+Route::post('/profile/update', [AccountController::class, 'updateProfile']) -> name('updateProfile');
+Route::get('/doi-mat-khau', [AccountController::class, 'editPassword']) ->name('editPassword');
+Route::post('/update-password', [AccountController::class, 'updatePassword']) -> name('updatePassword');
+
 //Admin
 Route::prefix('admin')->middleware("admin")->group(function () {
-    Route::get('/trang-chu', [HomeController::class, 'index']) ->name('home.index');
-
-    //Profile
-    Route::get('/thong-tin-tai-khoan', [AccountController::class, 'profile']) ->name('profile');
-    Route::get('/cap-nhat-thong-tin', [AccountController::class, 'editProfile']) ->name('edit.profile');
-    Route::post('/profile/update', [AccountController::class, 'updateProfile']) -> name('updateProfile');
-    Route::get('/doi-mat-khau', [AccountController::class, 'editPassword']) ->name('editPassword');
-    Route::post('/update-password', [AccountController::class, 'updatePassword']) -> name('updatePassword');
+    Route::get('/trang-chu', [HomeController::class, 'index']) ->name('home.index');   
     //CRUD Menu
     Route::get('/menu/index', [AdminMenuController::class, 'index']) ->name('menu.index');
     Route::get('/menu/create', [AdminMenuController::class, 'create']) -> name('menu.create');
@@ -74,9 +78,24 @@ Route::prefix('admin')->middleware("admin")->group(function () {
     Route::get('/danh-sach-nguoi-dung', [UserController::class, 'index']) ->name('user.index');
     Route::get('/them-moi-nguoi-dung', [UserController::class, 'create']) -> name('user.create');
     Route::post('/user/store', [UserController::class, 'store']) -> name('user.store');
-    Route::post('/user/change-status', [UserController::class, 'changeStatus']) -> name('user.store');
+    Route::get('/thong-tin-nguoi-dung/{id}', [UserController::class, 'show']) -> name('user.show');
+    Route::post('/user/change-status/{id}', [UserController::class, 'changeStatus']);
 });
 
+Route::prefix('use-unit')->middleware("use-unit")->group(function () {
+    Route::get('/trang-chu', [HomeUserUnitController::class, 'index']) ->name('homeU.index');
 
-
+    //Error Report
+    Route::get('/bao-loi-thiet-bi', [ErrorReportController::class, 'index']) ->name('report.index');
+    Route::post('/add-to-report/{id}', [ErrorReportController::class, 'addtoReport']);
+    Route::get('/get-buildings/{branch_id}', [ErrorReportController::class, 'getBuildingsByBranch']);
+    Route::get('/get-rooms/{building_id}', [ErrorReportController::class, 'getRoomsByBuilding']);
+    Route::get('/get-devices/{room_id}', [ErrorReportController::class, 'getDevicesByRoom']);
+    Route::get('/chi-tiet-phieu-bao-tri', [ErrorReportController::class, 'detail'])->name('report.detail');
+    Route::post('/remove-report/{id}', [ErrorReportController::class, 'removeReport']);
+    Route::get('/clear-report', [ErrorReportController::class, 'clearReport']);
+    Route::get('/get-error/{id}', [ErrorReportController::class, 'getErrorReport']);
+    Route::post('/save-error', [ErrorReportController::class, 'saveErrorReport']);
+    Route::post('/save-maintenance', [ErrorReportController::class, 'saveMaintenance']);
+});
 
